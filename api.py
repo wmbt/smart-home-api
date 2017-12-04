@@ -4,8 +4,8 @@ from flask_restful.reqparse import RequestParser
 
 from control import floor
 
-app = Flask(__name__)
-api = Api(app)
+application = Flask(__name__)
+api = Api(application)
 
 
 class HeatFloor(Resource):
@@ -27,4 +27,4 @@ class HeatFloor(Resource):
 
 api.add_resource(HeatFloor, '/api/heatfloor')
 if __name__ == '__main__':
-    app.run(host='0.0.0.0')
+    application.run(host='0.0.0.0')

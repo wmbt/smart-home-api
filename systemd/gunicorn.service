@@ -1,0 +1,19 @@
+[Unit]
+Description=Gunicorn HTTP server daemon
+Requires=gunicorn.socket
+After=network.target
+
+[Service]
+PIDFile=/run/gunicorn/pid
+User=nobody
+Group=nogroup
+RuntimeDirectory=gunicorn
+WorkingDirectory=/home/pi/Projects/smart-home-api/
+ExecStart=/usr/local/bin/gunicorn --pid /run/gunicorn/pid   \
+          --bind unix:/run/gunicorn/socket api:application
+ExecReload=/bin/kill -s HUP $MAINPID
+ExecStop=/bin/kill -s TERM $MAINPID
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
