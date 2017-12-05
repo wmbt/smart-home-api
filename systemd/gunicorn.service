@@ -4,13 +4,15 @@ Requires=gunicorn.socket
 After=network.target
 
 [Service]
+PermissionsStartOnly=true
+ExecStartPre=/bin/mkdir -p -m=775 /var/log/gunicorn
+ExecStartPre=/bin/chown -R nobody:nogroup /var/log/gunicorn
 PIDFile=/run/gunicorn/pid
 User=nobody
 Group=nogroup
 RuntimeDirectory=gunicorn
 WorkingDirectory=/home/pi/Projects/smart-home-api/
-ExecStart=/usr/local/bin/gunicorn --pid /run/gunicorn/pid   \
-          --bind unix:/run/gunicorn/socket api:application
+ExecStart=/usr/local/bin/gunicorn -c file:gunicorn-conf.py api:application
 ExecReload=/bin/kill -s HUP $MAINPID
 ExecStop=/bin/kill -s TERM $MAINPID
 PrivateTmp=true
